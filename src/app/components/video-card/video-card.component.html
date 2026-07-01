@@ -1,0 +1,58 @@
+<mat-card class="video-card" appearance="outlined">
+  <div class="video-layout">
+    <!-- Thumbnail -->
+    <div class="thumbnail-wrapper">
+      <img [src]="video.thumbnail" [alt]="video.title" class="thumbnail" />
+      <span class="duration-badge">{{ formattedDuration }}</span>
+    </div>
+
+    <!-- Info -->
+    <div class="video-info">
+      <h2 class="video-title">{{ video.title }}</h2>
+
+      <div class="meta-row">
+        <a class="channel-link" [href]="video.channelUrl" target="_blank" rel="noopener">
+          <mat-icon>person</mat-icon>
+          <span>{{ video.channel }}</span>
+        </a>
+        <span class="meta-chip">
+          <mat-icon>visibility</mat-icon> {{ formattedViews }} views
+        </span>
+        <span class="meta-chip">
+          <mat-icon>thumb_up</mat-icon> {{ formattedLikes }}
+        </span>
+        <span class="meta-chip">
+          <mat-icon>calendar_today</mat-icon> {{ video.uploadDate }}
+        </span>
+      </div>
+
+      <div class="description">
+        {{ showFullDescription ? video.description : shortDescription }}
+        @if (video.description.length > 200) {
+          <button mat-button color="primary" class="show-more-btn" (click)="showFullDescription = !showFullDescription">
+            {{ showFullDescription ? 'Show less' : 'Show more' }}
+          </button>
+        }
+      </div>
+
+      <div class="format-summary">
+        <mat-icon>video_settings</mat-icon>
+        <span>{{ formatCount }} formats available</span>
+        <span class="format-tags">
+          @for (type of ['video+audio', 'video', 'audio']; track type) {
+            <mat-chip-set>
+              <mat-chip class="type-chip">{{ type }}</mat-chip>
+            </mat-chip-set>
+          }
+        </span>
+      </div>
+
+      <div class="actions">
+        <button mat-flat-button color="primary" (click)="selectFormats.emit()" class="select-btn">
+          <mat-icon>download</mat-icon>
+          Choose Format &amp; Download
+        </button>
+      </div>
+    </div>
+  </div>
+</mat-card>

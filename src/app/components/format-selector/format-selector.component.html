@@ -1,0 +1,162 @@
+<div class="format-selector">
+  <mat-tab-group animationDuration="200ms" color="primary">
+
+    <!-- Video + Audio Tab -->
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">movie</mat-icon>
+        Video + Audio
+        <span class="tab-count">{{ combinedFormats.length }}</span>
+      </ng-template>
+      <div class="tab-content">
+        <p class="tab-hint">
+          <mat-icon>info</mat-icon>
+          Ready-to-play files. Video and audio merged in a single file.
+        </p>
+        <table mat-table [dataSource]="combinedFormats" class="format-table">
+          <ng-container matColumnDef="quality">
+            <th mat-header-cell *matHeaderCellDef>Quality</th>
+            <td mat-cell *matCellDef="let f">
+              <span class="quality-badge" [attr.data-tier]="qualityColor(f.quality)">{{ f.quality }}</span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="ext">
+            <th mat-header-cell *matHeaderCellDef>Format</th>
+            <td mat-cell *matCellDef="let f">
+              <span class="ext-chip">{{ f.ext.toUpperCase() }}</span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="resolution">
+            <th mat-header-cell *matHeaderCellDef>Resolution</th>
+            <td mat-cell *matCellDef="let f">{{ f.resolution }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="codec">
+            <th mat-header-cell *matHeaderCellDef>Codec</th>
+            <td mat-cell *matCellDef="let f">{{ codecLabel(f) }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="size">
+            <th mat-header-cell *matHeaderCellDef>Size</th>
+            <td mat-cell *matCellDef="let f">{{ formatBytes(f.filesize) }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let f">
+              <button mat-flat-button color="primary" class="dl-btn" (click)="selectAndDownload(f)">
+                <mat-icon>download</mat-icon> Download
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+              [class.selected-row]="selectedFormat()?.formatId === row.formatId"></tr>
+        </table>
+      </div>
+    </mat-tab>
+
+    <!-- Video Only Tab -->
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">videocam</mat-icon>
+        Video Only
+        <span class="tab-count">{{ videoOnlyFormats.length }}</span>
+      </ng-template>
+      <div class="tab-content">
+        <p class="tab-hint">
+          <mat-icon>warning</mat-icon>
+          No audio track. Ideal for muxing with a custom audio file.
+        </p>
+        <table mat-table [dataSource]="videoOnlyFormats" class="format-table">
+          <ng-container matColumnDef="quality">
+            <th mat-header-cell *matHeaderCellDef>Quality</th>
+            <td mat-cell *matCellDef="let f">
+              <span class="quality-badge" [attr.data-tier]="qualityColor(f.quality)">{{ f.quality }}</span>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="ext">
+            <th mat-header-cell *matHeaderCellDef>Format</th>
+            <td mat-cell *matCellDef="let f"><span class="ext-chip">{{ f.ext.toUpperCase() }}</span></td>
+          </ng-container>
+          <ng-container matColumnDef="resolution">
+            <th mat-header-cell *matHeaderCellDef>Resolution</th>
+            <td mat-cell *matCellDef="let f">{{ f.resolution }}</td>
+          </ng-container>
+          <ng-container matColumnDef="codec">
+            <th mat-header-cell *matHeaderCellDef>Codec</th>
+            <td mat-cell *matCellDef="let f">{{ codecLabel(f) }}</td>
+          </ng-container>
+          <ng-container matColumnDef="size">
+            <th mat-header-cell *matHeaderCellDef>Size</th>
+            <td mat-cell *matCellDef="let f">{{ formatBytes(f.filesize) }}</td>
+          </ng-container>
+          <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let f">
+              <button mat-flat-button color="primary" class="dl-btn" (click)="selectAndDownload(f)">
+                <mat-icon>download</mat-icon> Download
+              </button>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+              [class.selected-row]="selectedFormat()?.formatId === row.formatId"></tr>
+        </table>
+      </div>
+    </mat-tab>
+
+    <!-- Audio Only Tab -->
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">music_note</mat-icon>
+        Audio Only
+        <span class="tab-count">{{ audioFormats.length }}</span>
+      </ng-template>
+      <div class="tab-content">
+        <p class="tab-hint">
+          <mat-icon>info</mat-icon>
+          Extract audio only. Great for music or podcasts.
+        </p>
+        <table mat-table [dataSource]="audioFormats" class="format-table">
+          <ng-container matColumnDef="quality">
+            <th mat-header-cell *matHeaderCellDef>Bitrate</th>
+            <td mat-cell *matCellDef="let f">
+              <span class="quality-badge">{{ f.quality }}</span>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="ext">
+            <th mat-header-cell *matHeaderCellDef>Format</th>
+            <td mat-cell *matCellDef="let f"><span class="ext-chip">{{ f.ext.toUpperCase() }}</span></td>
+          </ng-container>
+          <ng-container matColumnDef="resolution">
+            <th mat-header-cell *matHeaderCellDef>Note</th>
+            <td mat-cell *matCellDef="let f">{{ f.note }}</td>
+          </ng-container>
+          <ng-container matColumnDef="codec">
+            <th mat-header-cell *matHeaderCellDef>Codec</th>
+            <td mat-cell *matCellDef="let f">{{ f.acodec }}</td>
+          </ng-container>
+          <ng-container matColumnDef="size">
+            <th mat-header-cell *matHeaderCellDef>Size</th>
+            <td mat-cell *matCellDef="let f">{{ formatBytes(f.filesize) }}</td>
+          </ng-container>
+          <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let f">
+              <button mat-flat-button color="accent" class="dl-btn" (click)="selectAndDownload(f)">
+                <mat-icon>download</mat-icon> Download
+              </button>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+              [class.selected-row]="selectedFormat()?.formatId === row.formatId"></tr>
+        </table>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>

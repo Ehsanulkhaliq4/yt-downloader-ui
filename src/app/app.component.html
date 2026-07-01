@@ -1,0 +1,65 @@
+<div class="app-shell" [class.dark-mode]="darkMode()">
+
+  <!-- Toolbar -->
+  <mat-toolbar color="primary" class="app-toolbar">
+    <button mat-icon-button (click)="resetSearch()" matTooltip="Home">
+      <mat-icon>video_library</mat-icon>
+    </button>
+    <span class="toolbar-title">YT Downloader</span>
+    <span class="spacer"></span>
+    <button mat-icon-button (click)="toggleDark()" [matTooltip]="darkMode() ? 'Light mode' : 'Dark mode'">
+      <mat-icon>{{ darkMode() ? 'light_mode' : 'dark_mode' }}</mat-icon>
+    </button>
+  </mat-toolbar>
+
+  <!-- Main content -->
+  <main class="main-content">
+
+    <!-- Download tracker (always visible at top if active) -->
+    <div id="download-tracker" class="section">
+      <app-download-tracker></app-download-tracker>
+    </div>
+
+    <!-- URL input -->
+    <div class="section">
+      <app-url-input (fetchInfo)="onFetchInfo($event)"></app-url-input>
+    </div>
+
+    <!-- Error state -->
+    @if (error()) {
+      <div class="section error-banner">
+        <mat-icon>error_outline</mat-icon>
+        <span>{{ error() }}</span>
+      </div>
+    }
+
+    <!-- Video info card -->
+    @if (videoInfo()) {
+      <div class="section slide-in">
+        <app-video-card
+          [video]="videoInfo()!"
+          (selectFormats)="onShowFormats()"
+        ></app-video-card>
+      </div>
+    }
+
+    <!-- Format selector -->
+    @if (videoInfo() && showFormats()) {
+      <div id="format-section" class="section slide-in">
+        <div class="section-header">
+          <mat-icon>video_settings</mat-icon>
+          <h3>Select Format</h3>
+        </div>
+        <app-format-selector
+          [video]="videoInfo()!"
+          (download)="onDownload($event)"
+        ></app-format-selector>
+      </div>
+    }
+
+  </main>
+
+  <footer class="app-footer">
+    Powered by <strong>yt-dlp</strong> &bull; Backend: <strong>Quarkus</strong> &bull; Frontend: <strong>Angular + Material</strong>
+  </footer>
+</div>

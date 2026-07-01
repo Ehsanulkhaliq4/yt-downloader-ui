@@ -1,0 +1,112 @@
+.format-selector {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.tab-icon {
+  margin-right: 6px;
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  vertical-align: middle;
+}
+
+.tab-count {
+  margin-left: 6px;
+  background: var(--mat-sys-primary-container);
+  color: var(--mat-sys-on-primary-container);
+  border-radius: 10px;
+  padding: 1px 7px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.tab-content {
+  padding: 16px 0;
+}
+
+.tab-hint {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  color: var(--mat-sys-on-surface-variant);
+  margin: 0 0 12px;
+  padding: 8px 12px;
+  background: var(--mat-sys-surface-variant);
+  border-radius: 6px;
+
+  mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+}
+
+.format-table {
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+
+  th.mat-header-cell {
+    font-weight: 600;
+    color: var(--mat-sys-on-surface);
+    font-size: 0.85rem;
+    white-space: nowrap;
+  }
+
+  td.mat-cell {
+    font-size: 0.875rem;
+    padding: 10px 16px;
+  }
+
+  tr.mat-row:hover {
+    background: var(--mat-sys-surface-variant);
+    cursor: pointer;
+  }
+
+  tr.selected-row {
+    background: rgba(var(--mat-sys-primary-rgb, 103, 80, 164), 0.08);
+  }
+}
+
+.quality-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  background: var(--mat-sys-secondary-container);
+  color: var(--mat-sys-on-secondary-container);
+
+  &[data-tier='primary'] {
+    background: var(--mat-sys-primary-container);
+    color: var(--mat-sys-on-primary-container);
+  }
+
+  &[data-tier='accent'] {
+    background: var(--mat-sys-tertiary-container);
+    color: var(--mat-sys-on-tertiary-container);
+  }
+}
+
+.ext-chip {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: var(--mat-sys-surface-variant);
+  color: var(--mat-sys-on-surface-variant);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.dl-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.82rem;
+  padding: 4px 14px;
+  min-height: 34px;
+}

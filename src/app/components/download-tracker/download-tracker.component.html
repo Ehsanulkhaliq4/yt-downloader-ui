@@ -1,0 +1,88 @@
+@if ((downloads$ | async); as downloads) {
+  @if (downloads.length > 0) {
+    <div class="tracker-section">
+      <h3 class="tracker-heading">
+        <mat-icon>download_for_offline</mat-icon>
+        Downloads
+        <span class="dl-count">{{ downloads.length }}</span>
+      </h3>
+
+      <div class="dl-list">
+        @for (dl of downloads; track trackById($index, dl)) {
+          <mat-card class="dl-card" [class]="'state-' + dl.state" appearance="outlined">
+            <div class="dl-row">
+              <!-- Thumbnail -->
+              <img [src]="dl.thumbnail" [alt]="dl.videoTitle" class="dl-thumb" />
+
+              <!-- Info -->
+              <div class="dl-info">
+                <div class="dl-title">{{ dl.videoTitle }}</div>
+                <div class="dl-meta">
+                  <span class="format-note">{{ dl.formatNote }}</span>
+                  @if (dl.totalSize) {
+                    <span class="size-info">{{ dl.downloadedSize }} / {{ dl.totalSize }}</span>
+                  }
+                  @if (dl.speed && dl.state === 'downloading') {
+                    <span class="speed-info">
+                      <mat-icon>speed</mat-icon> {{ dl.speed }}
+                    </span>
+                  }
+                  @if (dl.eta !== null && dl.state === 'downloading') {
+                    <span class="eta-info">ETA {{ etaLabel(dl.eta) }}</span>
+                  }
+                </div>
+
+                <div class="progress-row">
+                  <mat-progress-bar
+                    [mode]="progressMode(dl)"
+                    [value]="dl.progress"
+                    [color]="progressColor(dl)"
+                    class="progress-bar"
+                  ></mat-progress-bar>
+
+                  <div class="state-indicator" [class]="'state-' + dl.state">
+                    <mat-icon class="state-icon">{{ stateIcon(dl) }}</mat-icon>
+                    <span>{{ stateLabel(dl) }}</span>
+                  </div>
+                </div>
+
+                @if (dl.state === 'completed' && dl.filename) {
+                  <div class="filename-row">
+                    <mat-icon>insert_drive_file</mat-icon>
+                    <span>{{ dl.filename }}</span>
+                  </div>
+                }
+
+                @if (dl.state === 'error' && dl.error) {
+                  <div class="error-row">
+                    <mat-icon>error_outline</mat-icon>
+                    <span>{{ dl.error }}</span>
+                  </div>
+                }
+              </div>
+
+              <!-- Actions -->
+              <div class="dl-actions">
+                @if (dl.state === 'completed') {
+                  <button mat-icon-button color="primary" matTooltip="Open file">
+                    <mat-icon>folder_open</mat-icon>
+                  </button>
+                }
+                @if (dl.state === 'downloading' || dl.state === 'queued') {
+                  <button mat-icon-button color="warn" matTooltip="Cancel" (click)="cancel(dl)">
+                    <mat-icon>stop_circle</mat-icon>
+                  </button>
+                }
+                @if (dl.state === 'completed' || dl.state === 'error') {
+                  <button mat-icon-button matTooltip="Remove" (click)="remove(dl)">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                }
+              </div>
+            </div>
+          </mat-card>
+        }
+      </div>
+    </div>
+  }
+}

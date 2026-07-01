@@ -1,0 +1,152 @@
+.video-card {
+  max-width: 900px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.video-layout {
+  display: flex;
+  gap: 24px;
+  padding: 20px;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+  }
+}
+
+.thumbnail-wrapper {
+  position: relative;
+  flex-shrink: 0;
+  width: 240px;
+  height: 135px;
+  border-radius: 8px;
+  overflow: hidden;
+
+  @media (max-width: 600px) {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+
+  .thumbnail {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .duration-badge {
+    position: absolute;
+    bottom: 6px;
+    right: 6px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+}
+
+.video-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+}
+
+.video-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+
+  .channel-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--mat-sys-primary);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.875rem;
+
+    mat-icon {
+      font-size: 16px;
+      width: 16px;
+      height: 16px;
+    }
+
+    &:hover { text-decoration: underline; }
+  }
+
+  .meta-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.8rem;
+    color: var(--mat-sys-on-surface-variant);
+
+    mat-icon {
+      font-size: 14px;
+      width: 14px;
+      height: 14px;
+    }
+  }
+}
+
+.description {
+  font-size: 0.85rem;
+  color: var(--mat-sys-on-surface-variant);
+  line-height: 1.5;
+
+  .show-more-btn {
+    padding: 0;
+    min-width: unset;
+    height: auto;
+    font-size: 0.85rem;
+    vertical-align: baseline;
+  }
+}
+
+.format-summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: var(--mat-sys-on-surface-variant);
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+
+  .format-tags {
+    display: flex;
+    gap: 4px;
+  }
+
+  .type-chip {
+    font-size: 0.7rem;
+    min-height: 22px;
+    height: 22px;
+  }
+}
+
+.actions {
+  margin-top: 4px;
+
+  .select-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+}
